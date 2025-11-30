@@ -1,29 +1,42 @@
+// backend/routes/admin.js
 const express = require('express');
 const router = express.Router();
 const Startup = require('../models/Startup');
 const auth = require('../middleware/auth');
 
-// Middleware to check if the user is an official
+// ------------------------
+//  Middleware: only officials
+// ------------------------
 const adminAuth = (req, res, next) => {
-    if (req.user && req.user.role === 'official') {
-        next();
-    } else {
-        res.status(403).json({ msg: 'Access denied. Not an official.' });
-    }
+  if (req.user && req.user.role === 'official') {
+    return next();
+  }
+  return res.status(403).json({ msg: 'Access denied. Not an official.' });
 };
 
-// Get all applications
+// ------------------------
+//  GET /api/admin/applications
+//  Get all startup applications (for admin panel)
+//  Private – officials only
+// ------------------------
 router.get('/applications', [auth, adminAuth], async (req, res) => {
   try {
-    const applications = await Startup.find().select('-password').sort({ createdAt: -1 });
+    const applications = await Startup.find()
+      .select('-password')
+      .sort({ createdAt: -1 });
+
     res.json(applications);
   } catch (err) {
-    console.error(err.message);
+    console.error('Error fetching applications:', err.message);
     res.status(500).send('Server Error');
   }
 });
 
-// --- UPDATED STATUS UPDATE ROUTE ---
+// ------------------------
+//  PUT /api/admin/update-status/:startupId
+//  Update status + timeline + emit real-time event
+//  Private – officials only
+// ------------------------
 router.put('/update-status/:startupId', [auth, adminAuth], async (req, res) => {
   const { newStatus, comment } = req.body;
 
@@ -32,41 +45,43 @@ router.put('/update-status/:startupId', [auth, adminAuth], async (req, res) => {
   }
 
   try {
-    const startup = await Startup.findById(req.params.startupId);
+    const { startupId } = req.params;
+
+    const startup = await Startup.findById(startupId);
     if (!startup) {
       return res.status(404).json({ msg: 'Startup application not found' });
     }
 
-    // 1. Update status
+    // 1. Update current status
     startup.applicationStatus = newStatus;
 
-    // --- SAFETY CHECK (Fixes the crash) ---
-    // If this startup record is old and doesn't have the timeline array, create it now.
+    // 2. Ensure we have a timeline array
     if (!Array.isArray(startup.statusTimeline)) {
       startup.statusTimeline = [];
     }
-    // --------------------------------------
 
-    // 2. Add to history
+    // 3. Push new history entry
     startup.statusTimeline.push({
       status: newStatus,
-      comment: comment || ''
+      comment: comment || '',
+      date: new Date(),
     });
 
-    // 3. Save
+    // 4. Save to DB
     await startup.save();
 
-    // 4. Real-time update
-    const io = req.app.get('socketio');
-    io.to(req.params.startupId).emit('statusUpdate', {
-      applicationStatus: startup.applicationStatus,
-      statusTimeline: startup.statusTimeline
-    }); 
+    // 5. Real-time event via socket.io
+    const io = req.app.get('socketio'); // set in server.js
+    if (io) {
+      io.to(startupId.toString()).emit('statusUpdate', {
+        applicationStatus: startup.applicationStatus,
+        statusTimeline: startup.statusTimeline,
+      });
+    }
 
-    res.json(startup);
-
+    return res.json(startup);
   } catch (err) {
-    console.error(err.message);
+    console.error('Error in update-status:', err.message);
     res.status(500).send('Server Error');
   }
 });
