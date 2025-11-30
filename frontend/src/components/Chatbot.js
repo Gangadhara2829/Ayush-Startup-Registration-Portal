@@ -122,7 +122,7 @@ const Chatbot = () => {
 
   // Connect to socket and set up listeners
   useEffect(() => {
-    const newSocket = io('http://localhost:5000'); 
+    const newSocket = io('https://ayush-portal-backend.onrender.com'); 
     setSocket(newSocket);
 
     // Listen for messages from the AI bot

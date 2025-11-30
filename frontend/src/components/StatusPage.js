@@ -33,7 +33,7 @@ const StatusPage = () => {
   useEffect(() => {
     if (!startupData) return;
 
-    const socket = io('http://localhost:5000');
+    const socket = io('https://ayush-portal-backend.onrender.com');
     socket.emit('joinRoom', startupData._id);
 
     socket.on('statusUpdate', (data) => {
