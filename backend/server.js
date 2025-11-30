@@ -13,6 +13,12 @@ const app = express();
 const server = http.createServer(app);
 
 // ---------------- CORS ORIGINS ----------------
+const allowedOrigins = [
+  'http://localhost:3000',
+  'https://ayush-registration-portal-j1v7n.vercel.app',
+  'https://ayush-registration-portal.vercel.app', // extra if needed
+];
+
 const CLIENT_ORIGINS = [
   "https://ayush-registration-portal.vercel.app","http://localhost:3000"   // React dev server
   // add other origins if needed, e.g. deployed frontend
