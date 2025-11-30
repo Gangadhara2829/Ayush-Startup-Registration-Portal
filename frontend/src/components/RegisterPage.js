@@ -59,7 +59,7 @@ const RegisterPage = () => {
           'Content-Type': 'multipart/form-data',
         },
       };
-      await axios.post('http://localhost:5000/api/auth/register', data, config);
+      await axios.post('https://ayush-portal-backend.onrender.com/api/auth/register', data, config);
       
       setSuccessMessage('Successfully created your application! Redirecting to login page...');
       setTimeout(() => navigate('/login'), 3000);

@@ -14,7 +14,7 @@ const server = http.createServer(app);
 
 // ---------------- CORS ORIGINS ----------------
 const CLIENT_ORIGINS = [
-  "http://localhost:3000",   // React dev server
+  "https://ayush-registration-portal.vercel.app","http://localhost:3000"   // React dev server
   // add other origins if needed, e.g. deployed frontend
 ];
 

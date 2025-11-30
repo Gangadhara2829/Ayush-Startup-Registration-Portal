@@ -10,7 +10,7 @@ const AdminDashboardPage = () => {
     try {
       const token = localStorage.getItem('token');
       // Use the full backend URL for cross-origin API call
-      const res = await axios.get('http://localhost:5000/api/admin/applications', {
+      const res = await axios.get('https://ayush-portal-backend.onrender.com', {
         headers: { 'x-auth-token': token }
       });
       setApplications(res.data);

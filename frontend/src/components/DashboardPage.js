@@ -26,7 +26,7 @@ const DashboardPage = () => {
 
       try {
         const config = { headers: { 'x-auth-token': token } };
-        const res = await axios.get('http://localhost:5000/api/dashboard/me', config);
+        const res = await axios.get('https://ayush-portal-backend.onrender.com', config);
         setStartup(res.data);
         // Pre-fill the form data with the fetched profile information
         setFormData({

@@ -14,7 +14,7 @@ const StatusPage = () => {
         const token = localStorage.getItem('token');
         if (!token) throw new Error("No token found");
 
-        const res = await axios.get('http://localhost:5000/api/dashboard/my-application', {
+        const res = await axios.get('https://ayush-portal-backend.onrender.com', {
           headers: { 'x-auth-token': token }
         });
         setStartupData(res.data);

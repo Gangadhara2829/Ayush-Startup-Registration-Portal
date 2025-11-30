@@ -19,7 +19,7 @@ const LoginPage = ({ onLogin }) => {
   const onSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post('http://localhost:5000/api/auth/login', formData);
+      const res = await axios.post('https://ayush-portal-backend.onrender.com/api/auth/login', formData);
       handleAuthSuccess(res.data.token);
     } catch (err) {
       setError(
@@ -31,7 +31,7 @@ const LoginPage = ({ onLogin }) => {
   // Google login success
   const handleGoogleSuccess = async (credentialResponse) => {
     try {
-      const res = await axios.post('http://localhost:5000/api/auth/google', {
+      const res = await axios.post('https://ayush-portal-backend.onrender.com/api/auth/google', {
         token: credentialResponse.credential
       });
       handleAuthSuccess(res.data.token);
