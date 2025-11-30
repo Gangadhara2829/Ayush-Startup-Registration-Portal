@@ -1,26 +1,47 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { API_BASE_URL } from '../apiConfig';
 import AdminStatusPanel from './AdminStatusPanel';
 
 const AdminDashboardPage = () => {
-  const [applications, setApplications] = useState([]);
+  const [applications, setApplications] = useState([]); // always an array
+  const [selectedApp, setSelectedApp] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
 
   const fetchApplications = async () => {
+    setLoading(true);
+    setError('');
+
     try {
       const token = localStorage.getItem('token');
-      // Use the full backend URL for cross-origin API call
-      const res = await axios.get('https://ayush-portal-backend.onrender.com', {
-        headers: { 'x-auth-token': token }
-      });
-      setApplications(res.data);
-    } catch (err) {
-      console.error("Error loading applications:", err);
-      if (err.response && (err.response.status === 401 || err.response.status === 403)) {
-         alert("Access Denied. You must be logged in as an Official.");
-      } else {
-         alert("Failed to load applications. Server may be offline.");
+
+      const res = await axios.get(
+        `${API_BASE_URL}/api/admin/applications`,
+        {
+          headers: {
+            'x-auth-token': token,
+          },
+        }
+      );
+
+      // Backend might return array or wrapped object – normalize to array
+      const data = res.data;
+      let list = [];
+
+      if (Array.isArray(data)) {
+        list = data;
+      } else if (Array.isArray(data.applications)) {
+        list = data.applications;
       }
+
+      setApplications(list);
+      setSelectedApp(list.length > 0 ? list[0] : null);
+    } catch (err) {
+      console.error('Error loading applications:', err);
+      setError('Failed to load applications. Server may be offline.');
+      setApplications([]); // keep it as array, avoid .map crash
+      setSelectedApp(null);
     } finally {
       setLoading(false);
     }
@@ -30,33 +51,88 @@ const AdminDashboardPage = () => {
     fetchApplications();
   }, []);
 
-  if (loading) return <div style={{padding: '20px'}}>Loading dashboard...</div>;
+  const handleSelect = (app) => {
+    setSelectedApp(app);
+  };
 
   return (
-    <div style={{padding: '20px'}}>
-      <h2>Admin Dashboard</h2>
-      <p>Review and manage startup applications.</p>
-      
-      {applications.length === 0 ? (
-        <p>No applications found.</p>
-      ) : (
-        <div style={{display: 'grid', gap: '20px'}}>
-          {applications.map(app => (
-            <div key={app._id} style={{border: '1px solid #ddd', padding: '20px', borderRadius: '8px', backgroundColor: 'white'}}>
-              <h4>{app.startupName}</h4>
-              <p><strong>Founder:</strong> {app.founderName} | <strong>Email:</strong> {app.email}</p>
-              <p><strong>Current Status:</strong> <span style={{fontWeight: 'bold', color: '#007bff'}}>{app.applicationStatus}</span></p>
-              
-              {/* --- PASS THE DOCUMENTS HERE --- */}
-              <AdminStatusPanel 
-                startupId={app._id} 
-                documents={app.documents || {}} // Pass documents with fallback
-                onUpdate={fetchApplications} // Refresh list after update
-              />
+    <div className="admin-dashboard">
+      <div className="app-list-panel">
+        <h2>Applications</h2>
+
+        {loading && <p>Loading applications...</p>}
+        {error && <p style={{ color: 'red' }}>{error}</p>}
+
+        {!loading && !error && applications.length === 0 && (
+          <p>No applications found.</p>
+        )}
+
+        {!loading &&
+          !error &&
+          applications.length > 0 &&
+          applications.map((app) => (
+            <div
+              key={app._id}
+              className={
+                'app-list-item ' +
+                (selectedApp && selectedApp._id === app._id
+                  ? 'selected'
+                  : '')
+              }
+              onClick={() => handleSelect(app)}
+            >
+              <div>
+                <strong>{app.startupName}</strong>
+                <div style={{ fontSize: '0.9rem', color: '#666' }}>
+                  {app.email}
+                </div>
+              </div>
+              <div>{app.verificationStatus || 'Pending'}</div>
             </div>
           ))}
-        </div>
-      )}
+      </div>
+
+      <div className="app-detail-panel">
+        {loading && <p>Loading details...</p>}
+        {!loading && !selectedApp && !error && (
+          <p>Select an application from the left to view details.</p>
+        )}
+        {!loading && error && (
+          <p style={{ color: 'red' }}>{error}</p>
+        )}
+
+        {!loading && selectedApp && !error && (
+          <>
+            <h2>{selectedApp.startupName}</h2>
+            <p>
+              <strong>Sector:</strong> {selectedApp.sector}
+            </p>
+            <p>
+              <strong>Founder:</strong> {selectedApp.founderName}
+            </p>
+            <p>
+              <strong>Email:</strong> {selectedApp.email}
+            </p>
+            <p>
+              <strong>Contact:</strong> {selectedApp.contactNumber}
+            </p>
+            <p>
+              <strong>Location:</strong> {selectedApp.location}
+            </p>
+            <p>
+              <strong>Status:</strong>{' '}
+              {selectedApp.verificationStatus || 'Pending'}
+            </p>
+
+            {/* Documents & status controls */}
+            <AdminStatusPanel
+              startupId={selectedApp._id}
+              documents={selectedApp.documents || {}}
+              onUpdate={fetchApplications}
+            />
+          </>
+        )}
+      </div>
     </div>
   );
 };
