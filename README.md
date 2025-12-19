@@ -1,176 +1,189 @@
-AYUSH Startup Registration Portal
-A centralized, secure, and scalable web application for registering startups in the AYUSH sector.
-The portal provides guided compliance steps, secure authentication, AI‑powered document verification, real‑time status tracking, and seamless integration with government databases.
+# AYUSH Startup Registration Portal
 
-🔗 Live Website: https://ayush-registration-portal-ju7n.vercel.app/login
-🔗 Backend API: https://ayush-portal-backend.onrender.com
+A centralized, secure, and scalable web application designed to digitize and streamline the startup registration process in the AYUSH sector. The portal enables guided compliance, secure authentication, AI-powered document verification, and real-time application tracking.
 
-Features
-Authentication
-Google OAuth Login
+🔗 **Live Website:** https://ayush-registration-portal-ju7n.vercel.app/login  
+🔗 **Backend API:** https://ayush-portal-backend.onrender.com  
 
-JWT‑based authentication
+---
 
-Role‑based access (Startup / Official)
+## 🚀 Key Features
 
-Startup Registration
-Guided multi‑step registration process
+### 🔐 Authentication & Authorization
+- Google OAuth login
+- JWT-based authentication
+- Role-based access (Startup / Official / Admin)
 
-Auto‑validation of required fields
+### 📝 Startup Registration
+- Guided multi-step registration workflow
+- Auto-validation of required fields
+- Document upload with AI-powered verification
+- Real-time registration status tracking
 
-Document upload & AI‑based verification
+### 🧑‍💼 Admin & Official Panel
+- Review startup applications
+- Approve, reject, or request additional information
+- Compliance status tracking
+- Dashboard with analytics and insights
 
-Admin & Official Panel
-Review startup applications
+---
 
-Track compliance status
+## 📡 Backend Features
+- RESTful API using Node.js and Express
+- MongoDB Atlas database
+- Secure password hashing with bcrypt
+- Input validation and error handling
+- CORS protection for secure communication
 
-Approve, reject, or request more info
+---
 
-Real‑time dashboard with analytics
+## 🎨 Frontend Features
+- Built with React.js and modern UI components
+- Fully responsive design (Mobile, Tablet, Desktop)
+- Reusable components with clean UI architecture
+- Toast notifications for success and error messages
 
-📡 Backend Features
-Node.js + Express REST API
+---
 
-MongoDB Atlas database
+## 🛠 Tech Stack
 
-Secure password hashing (bcrypt)
+### Frontend
+- React.js
+- Axios
+- React Router
+- Google OAuth API
 
-Input validation
+### Backend
+- Node.js
+- Express.js
+- MongoDB
+- Mongoose
+- JWT Authentication
+- bcrypt
 
-CORS protection
+### Deployment
+- Frontend: Vercel
+- Backend: Render
+- Database: MongoDB Atlas
 
-Frontend
-React.js + Modern UI Components
+---
 
-Fully responsive (Mobile, Tablet, Desktop)
+## 📂 Project Structure
 
-Reusable components & clean UI
-
-Toast notifications for errors & success
-
-📁 Project Structure
 ayush-registration-portal/
 │
-├── backend/                 # Node.js + Express REST API
-│   ├── routes/
-│   ├── models/
-│   ├── controllers/
-│   ├── server.js
-│   ├── package.json
-│   └── .env                 # environment variables (not included in repo)
+├── backend/
+│ ├── routes/
+│ ├── controllers/
+│ ├── models/
+│ ├── server.js
+│ ├── package.json
+│ └── .env (not included)
 │
-├── frontend/                # React Frontend
-│   ├── public/
-│   ├── src/
-│   │   ├── components/
-│   │   ├── pages/
-│   │   ├── context/
-│   │   └── App.js
-│   ├── package.json
-│   └── .env
+├── frontend/
+│ ├── public/
+│ ├── src/
+│ │ ├── components/
+│ │ ├── pages/
+│ │ ├── context/
+│ │ └── App.js
+│ ├── package.json
+│ └── .env
 │
-├── package.json             # root file for monorepo support
+├── package.json
 └── README.md
-🚀 Tech Stack
-Frontend
-React.js
 
-Axios
 
-React Router
+---
 
-Google OAuth API
+## ⚙️ Environment Variables
 
-Backend
-Node.js
-
-Express.js
-
-Mongoose
-
-JWT
-
-Bcrypt
-
-Database
-MongoDB Atlas
-
-Deployment
-Frontend: Vercel
-
-Backend: Render
-
-Database: MongoDB Atlas
-
-⚙️ Environment Variables
-🔧 Frontend (.env)
+### 🔧 Frontend (.env)
 REACT_APP_GOOGLE_CLIENT_ID=your_google_client_id
 REACT_APP_BACKEND_URL=https://ayush-portal-backend.onrender.com
-🔧 Backend (.env)
+
+
+### 🔧 Backend (.env)
 MONGO_URI=your_mongodb_atlas_uri
 JWT_SECRET=your_secret_key
 GOOGLE_CLIENT_ID=your_google_client_id
 GEMINI_API_KEY=your_gemini_api_key
-🏗️ How to Run Locally
-1️⃣ Clone the Repository
+
+
+---
+
+## 🏗️ How to Run Locally
+
+1️⃣ Clone the repository  
 git clone https://github.com/Gangadhara2829/ayush-registration-portal.git
 cd ayush-registration-portal
-2️⃣ Install dependencies
-Backend:
+
+
+2️⃣ Install dependencies  
+
+**Backend**
 cd backend
 npm install
-Frontend:
+
+
+**Frontend**
 cd ../frontend
 npm install
-3️⃣ Start the servers
-Backend:
+
+
+3️⃣ Start the servers  
+
+**Backend**
 npm start
-Frontend:
+
+
+**Frontend**
 npm start
-App runs at:
-Frontend → http://localhost:3000
 
-Backend → http://localhost:5000
 
-🛠️ API Endpoints Overview
-Auth
-Method	Endpoint	Description
-POST	/api/auth/login	Login with email/password
-POST	/api/auth/google	Google OAuth login
-GET	/api/auth/me	Get logged‑in user
-Startup Registration
-Method	Endpoint	Description
-POST	/api/startup/register	Register new startup
-GET	/api/startup/status/:id	Track registration status
-📊 Admin Features
-Dashboard & analytics
+- Frontend → http://localhost:3000  
+- Backend → http://localhost:5000  
 
-Review startup submissions
+---
 
-Approve/Reject applications
+## 🔌 API Endpoints Overview
 
-Add comments & feedback
+### Authentication
+| Method | Endpoint | Description |
+|------|---------|-------------|
+| POST | /api/auth/login | Login using email/password |
+| POST | /api/auth/google | Google OAuth login |
+| GET  | /api/auth/me | Get logged-in user details |
 
-Manage users
+### Startup Registration
+| Method | Endpoint | Description |
+|------|---------|-------------|
+| POST | /api/startup/register | Register a new startup |
+| GET  | /api/startup/status/:id | Track application status |
 
-🔒 Security
-HTTPS enabled
+---
 
-Encrypted passwords
+## 🔒 Security Features
+- HTTPS enabled
+- Encrypted passwords
+- JWT-based authentication
+- CORS protection
+- Environment variable-based secrets
 
-JWT authentication
+---
 
-CORS protection
+## 🙌 Contribution Guidelines
+Pull requests are welcome. Please open an issue before making major changes.
 
-Environment variable based secrets
+---
 
-📸 Screenshots
-(You can add images from your repo’s screenshots/ folder)
+## ⭐ Support
+If you find this project useful, consider giving it a ⭐ on GitHub!
+🔥 WHY THIS VERSION IS PERFECT
+✅ Clean headings (recruiters scan fast)
+✅ Enterprise keywords (ATS-friendly)
+✅ Clear frontend / backend separation
+✅ Live links included (BIG PLUS)
+✅ Looks industry-level, not student-level
 
-🙌 Contribution Guidelines
-Pull requests are welcome!
-Please open an issue before making major changes.
-
-⭐ Support
-If you like this project, consider giving it a ⭐ on GitHub!
+This README alone makes your AYUSH project “INTERVIEW-WORTHY”.
