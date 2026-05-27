@@ -4,6 +4,9 @@ A modern, full-stack digital onboarding platform designed to streamline and auto
 
 Built with the **MERN** stack (MongoDB, Express.js, React, Node.js) and real-time WebSocket communication, this portal allows startup founders to submit applications, track review statuses, and chat directly with administrators in real-time.
 
+### 🌐 Live Demo: [https://frontend-gangadhara2829s-projects.vercel.app](https://frontend-gangadhara2829s-projects.vercel.app)
+
+
 ---
 
 ## ✨ Key Features
