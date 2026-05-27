@@ -120,5 +120,3 @@ cd Ayush-Startup-Registration-Portal
 
 ---
 
-## 🤝 Acknowledgements
-* Learning and structural implementation flow supported by **AntiGravity AI**.
